@@ -14,6 +14,7 @@ Vagrant::Config.run do |config|
 
   config.vm.forward_port 5005, 5005
   config.vm.forward_port 7990, 7990
+  config.vm.forward_port 7999, 7999
 
   #config.vm.provision :puppet do |puppet|
   #  puppet.manifests_path = "config"

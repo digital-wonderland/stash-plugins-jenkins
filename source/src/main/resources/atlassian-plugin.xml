@@ -1,32 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
-    <plugin-info>
-        <description>${project.description}</description>
-        <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-icon">images/pluginIcon.png</param>
-        <param name="plugin-logo">images/pluginLogo.png</param>
-    </plugin-info>
-
-    <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="jenkins"/>
-    
-    <!-- add our web resources -->
-    <web-resource key="jenkins-resources" name="jenkins Web Resources">
-        <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
-        <resource type="download" name="jenkins.css" location="/css/jenkins.css"/>
-        <resource type="download" name="jenkins.js" location="/js/jenkins.js"/>
-        <resource type="download" name="images/" location="/images"/>
-
-        <context>jenkins</context>
-    </web-resource>
-    
-    <!-- publish our component -->
-    <component key="myPluginComponent" class="com.example.atlassian.stash.plugins.jenkins.MyPluginComponentImpl" public="true">
-        <interface>com.example.atlassian.stash.plugins.jenkins.MyPluginComponent</interface>
-    </component>
-    
-    <!-- import from the product container -->
-    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
-    
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="jenkins"/>
+  <!-- add our web resources -->
+  <web-resource key="jenkins-resources" name="jenkins Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="jenkins.css" location="/css/jenkins.css"/>
+    <resource type="download" name="jenkins.js" location="/js/jenkins.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>jenkins</context>
+  </web-resource>
+  <!-- publish our component -->
+  <component key="myPluginComponent" class="com.example.atlassian.stash.plugins.jenkins.MyPluginComponentImpl" public="true">
+    <interface>com.example.atlassian.stash.plugins.jenkins.MyPluginComponent</interface>
+  </component>
+  <!-- import from the product container -->
+  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  <repository-hook name="Jenkins Post Receive Repository Hook" i18n-name-key="jenkins-post-receive-repository-hook.name" key="jenkins-post-receive-repository-hook" class="com.example.atlassian.stash.plugins.jenkins.JenkinsPostReceiveRepositoryHook">
+    <description key="jenkins-post-receive-repository-hook.description">The Jenkins Post Receive Repository Hook Plugin</description>
+    <icon>icon-example.png</icon>
+    <config-form name="Jenkins Post Receive Repository Hook Config" key="jenkins-post-receive-repository-hook-config">
+      <view>com.example.atlassian.stash.plugins.jenkins.jenkinspostreceiverepositoryhook.view</view>
+      <directory location="/static/"/>
+    </config-form>
+  </repository-hook>
 </atlassian-plugin>
