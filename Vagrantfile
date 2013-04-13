@@ -12,13 +12,11 @@ Vagrant::Config.run do |config|
     	"--name", "stash-plugins-jenkins"
     ]
 
-  config.vm.forward_port 5005, 5005
-  config.vm.forward_port 7990, 7990
-  config.vm.forward_port 7999, 7999
+  config.vm.forward_port 8080, 8080
 
-  #config.vm.provision :puppet do |puppet|
-  #  puppet.manifests_path = "config"
-  #  puppet.manifest_file = "puppet.pp"
-  #end
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = ""
+    puppet.manifest_file = "puppet.pp"
+  end
 end
 
