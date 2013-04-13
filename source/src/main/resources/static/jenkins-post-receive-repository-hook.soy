@@ -8,6 +8,7 @@
     {call aui.form.textField}
         {param id: 'url' /}
         {param value: $config ? $config['url'] : null /}
+        {param isRequired: true /}
         {param labelContent: 'Jenkins URL:'  /}
         {param descriptionText: 'The URL of your Jenkins instance' /}
         {param errorTexts: $errors ? $errors['url'] : null /}
