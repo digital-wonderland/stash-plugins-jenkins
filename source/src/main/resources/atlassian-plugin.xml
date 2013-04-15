@@ -8,22 +8,20 @@
     <param name="plugin-icon">images/jenkinsIcon.png</param>
     <param name="plugin-logo">images/jenkinsLogo.png</param>
   </plugin-info>
+
   <!-- add our i18n resource -->
   <resource type="i18n" name="i18n" location="jenkins"/>
+
   <!-- add our web resources -->
   <web-resource key="jenkins-resources" name="Jenkins Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
-    <resource type="download" name="jenkins.css" location="/css/jenkins.css"/>
-    <resource type="download" name="jenkins.js" location="/js/jenkins.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>jenkins</context>
   </web-resource>
-  <!-- publish our component -->
-  <component key="myPluginComponent" class="com.atlassian.stash.plugins.jenkins.MyPluginComponentImpl" public="true">
-    <interface>com.atlassian.stash.plugins.jenkins.MyPluginComponent</interface>
-  </component>
+
   <!-- import from the product container -->
   <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+
   <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
     <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
     <icon>images/jenkinsLogo.png</icon>
