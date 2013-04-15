@@ -1,4 +1,4 @@
-package com.example.atlassian.stash.plugins.jenkins;
+package com.atlassian.stash.plugins.jenkins;
 
 import com.atlassian.stash.hook.repository.*;
 import com.atlassian.stash.repository.*;
@@ -7,11 +7,11 @@ import com.atlassian.stash.setting.*;
 import java.net.URL;
 import java.util.Collection;
 
-public class JenkinsPostReceiveRepositoryHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
+public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
 {
     private final ApplicationPropertiesService applicationProperties;
 
-    public JenkinsPostReceiveRepositoryHook(ApplicationPropertiesService applicationProperties) {
+    public JenkinsBuildTrigger(ApplicationPropertiesService applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
 

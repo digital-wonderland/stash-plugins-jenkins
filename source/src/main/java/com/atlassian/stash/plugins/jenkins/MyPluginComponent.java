@@ -1,4 +1,4 @@
-package com.example.atlassian.stash.plugins.jenkins;
+package com.atlassian.stash.plugins.jenkins;
 
 public interface MyPluginComponent
 {

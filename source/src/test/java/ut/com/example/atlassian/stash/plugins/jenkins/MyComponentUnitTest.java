@@ -1,8 +1,8 @@
 package ut.com.example.atlassian.stash.plugins.jenkins;
 
 import org.junit.Test;
-import com.example.atlassian.stash.plugins.jenkins.MyPluginComponent;
-import com.example.atlassian.stash.plugins.jenkins.MyPluginComponentImpl;
+import com.atlassian.stash.plugins.jenkins.MyPluginComponent;
+import com.atlassian.stash.plugins.jenkins.MyPluginComponentImpl;
 
 import static org.junit.Assert.assertEquals;
 

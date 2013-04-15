@@ -11,7 +11,7 @@
   <!-- add our i18n resource -->
   <resource type="i18n" name="i18n" location="jenkins"/>
   <!-- add our web resources -->
-  <web-resource key="jenkins-resources" name="jenkins Web Resources">
+  <web-resource key="jenkins-resources" name="Jenkins Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <resource type="download" name="jenkins.css" location="/css/jenkins.css"/>
     <resource type="download" name="jenkins.js" location="/js/jenkins.js"/>
@@ -19,16 +19,16 @@
     <context>jenkins</context>
   </web-resource>
   <!-- publish our component -->
-  <component key="myPluginComponent" class="com.example.atlassian.stash.plugins.jenkins.MyPluginComponentImpl" public="true">
-    <interface>com.example.atlassian.stash.plugins.jenkins.MyPluginComponent</interface>
+  <component key="myPluginComponent" class="com.atlassian.stash.plugins.jenkins.MyPluginComponentImpl" public="true">
+    <interface>com.atlassian.stash.plugins.jenkins.MyPluginComponent</interface>
   </component>
   <!-- import from the product container -->
   <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
-  <repository-hook name="Jenkins Post Receive Repository Hook" i18n-name-key="jenkins-post-receive-repository-hook.name" key="jenkins-post-receive-repository-hook" class="com.example.atlassian.stash.plugins.jenkins.JenkinsPostReceiveRepositoryHook">
-    <description key="jenkins-post-receive-repository-hook.description">The Jenkins Post Receive Repository Hook Plugin</description>
+  <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
+    <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
     <icon>images/jenkinsLogo.png</icon>
-    <config-form name="Jenkins Post Receive Repository Hook Config" key="jenkins-post-receive-repository-hook-config">
-      <view>com.example.atlassian.stash.plugins.jenkins.jenkinspostreceiverepositoryhook.view</view>
+    <config-form name="Jenkins Build Trigger Config" key="jenkins-build-trigger-config">
+      <view>com.atlassian.stash.plugins.jenkins.jenkinsbuildtrigger.view</view>
       <directory location="/static/"/>
     </config-form>
   </repository-hook>
