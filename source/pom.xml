@@ -9,8 +9,8 @@
         <name>Example Company</name>
         <url>http://www.example.com/</url>
     </organization>
-    <name>jenkins</name>
-    <description>This is the com.example.atlassian.stash.plugins:jenkins plugin for Atlassian Stash.</description>
+    <name>Jenkins Integration</name>
+    <description>This plugin provides a post receive hook to trigger builds in Jenkins.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencyManagement>
         <dependencies>
