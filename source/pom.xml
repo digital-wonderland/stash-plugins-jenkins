@@ -10,7 +10,7 @@
         <url>http://www.example.com/</url>
     </organization>
     <name>Jenkins Integration</name>
-    <description>This plugin provides a post receive hook to trigger builds in Jenkins.</description>
+    <description>This plugin provides integration with Jenkins.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencyManagement>
         <dependencies>
