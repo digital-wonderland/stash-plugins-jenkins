@@ -1,5 +1,6 @@
 package com.atlassian.stash.plugins.jenkins;
 
+import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.stash.hook.repository.*;
 import com.atlassian.stash.repository.*;
 import com.atlassian.stash.server.ApplicationPropertiesService;
@@ -15,21 +16,27 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
     private static final String PROPERTY_URL = "url";
 
     private final ApplicationPropertiesService applicationProperties;
+    private final PluginSettingsFactory pluginSettingsFactory;
 
-    public JenkinsBuildTrigger(ApplicationPropertiesService applicationProperties) {
+    public JenkinsBuildTrigger(final ApplicationPropertiesService applicationProperties, final PluginSettingsFactory pluginSettingsFactory) {
         this.applicationProperties = applicationProperties;
+        this.pluginSettingsFactory = pluginSettingsFactory;
     }
 
     /**
      * Connects to a configured URL to notify of all changes.
      */
     @Override
-    public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges)
+    public void postReceive(final RepositoryHookContext context, final Collection<RefChange> refChanges)
     {
-        String projectKey = context.getRepository().getProject().getKey();
-        String repositoryName = context.getRepository().getName();
+        final String projectKey = context.getRepository().getProject().getKey();
+        final String repositoryName = context.getRepository().getName();
 
-        String url = context.getSettings().getString(PROPERTY_URL) + "/git/notifyCommit?url=http://" +
+        String url = context.getSettings().getString(PROPERTY_URL);
+        if(StringUtils.isEmpty(url))
+            url = (String) pluginSettingsFactory.createGlobalSettings().get(ConfigResource.PLUGIN_KEY_URL);
+
+        url = url + "/git/notifyCommit?url=http://" +
                 applicationProperties.getBaseUrl().getHost() + "/" + projectKey + "/" + repositoryName + ".git";
 
         if (url != null) {
