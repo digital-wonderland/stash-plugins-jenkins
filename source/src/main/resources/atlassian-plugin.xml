@@ -1,33 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
-  <plugin-info>
-    <description>${project.description}</description>
-    <version>${project.version}</version>
-    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-    <param name="plugin-icon">images/jenkinsIcon.png</param>
-    <param name="plugin-logo">images/jenkinsLogo.png</param>
-  </plugin-info>
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+        <param name="plugin-icon">images/jenkinsIcon.png</param>
+        <param name="plugin-logo">images/jenkinsLogo.png</param>
+    </plugin-info>
 
-  <!-- add our i18n resource -->
-  <resource type="i18n" name="i18n" location="jenkins"/>
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="jenkins"/>
 
-  <!-- add our web resources -->
-  <web-resource key="jenkins-resources" name="Jenkins Web Resources">
-    <dependency>com.atlassian.auiplugin:ajs</dependency>
-    <resource type="download" name="images/" location="/images"/>
-    <context>jenkins</context>
-  </web-resource>
+    <!-- add our web resources -->
+    <web-resource key="jenkins-resources" name="Jenkins Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="download" name="images/" location="/images"/>
+        <context>jenkins</context>
+    </web-resource>
 
-  <!-- import from the product container -->
-  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+    <web-resource name="Admin Web Resources" key="resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="download" name="admin.js" location="/js/admin.js"/>
+    </web-resource>
 
-  <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
-    <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
-    <icon>images/jenkinsLogo.png</icon>
-    <config-form name="Jenkins Build Trigger Config" key="jenkins-build-trigger-config">
-      <view>com.atlassian.stash.plugins.jenkins.jenkinsbuildtrigger.view</view>
-      <directory location="/static/"/>
-    </config-form>
-  </repository-hook>
+    <!-- import from the product container -->
+    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+
+    <template-context-item key="applicationPropertiesContextItem" component-ref="applicationProperties"
+                           context-key="applicationProperties" name="Application Properties Context Item"/>
+
+    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" />
+    <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" />
+    <component-import key="renderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer" />
+
+    <servlet key="admin-servlet" class="com.atlassian.stash.plugins.jenkins.AdminServlet">
+        <url-pattern>/jenkins/admin</url-pattern>
+    </servlet>
+
+    <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
+    <component-import key="transactionTemplate" interface="com.atlassian.sal.api.transaction.TransactionTemplate" />
+
+    <rest key="rest" path="/jenkins" version="1.0">
+        <description>Provides REST resources for the admin UI.</description>
+    </rest>
+
+    <web-item key="jenkins-menu-item" name="Jenkins Integration" section="atl.admin/admin-settings-section" weight="10">
+        <description>Link to Jenkins integration administration page.</description>
+        <label key="jenkins.admin.label" />
+        <link linkId="jenkins-integration-administration">/plugins/servlet/jenkins/admin</link>
+        <condition class="com.atlassian.stash.web.conditions.HasGlobalPermissionCondition">
+            <param name="permission">SYS_ADMIN</param>
+        </condition>
+    </web-item>
+
+    <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
+        <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
+        <icon>images/jenkinsLogo.png</icon>
+        <config-form name="Jenkins Build Trigger Config" key="jenkins-build-trigger-config">
+            <view>com.atlassian.stash.plugins.jenkins.jenkinsbuildtrigger.view</view>
+            <directory location="/static/"/>
+        </config-form>
+    </repository-hook>
 </atlassian-plugin>

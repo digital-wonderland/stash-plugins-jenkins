@@ -1,0 +1,50 @@
+<html>
+<head>
+    <title>$i18n.getText("jenkins.admin.label")</title>
+    <meta name="decorator" content="atl.admin">
+    $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+    $webResourceManager.requireResource("com.atlassian.stash.plugins.jenkins:resources")
+
+    <meta name="application-base-url" content="$applicationProperties.getBaseUrl()">
+</head>
+<body>
+<header class="aui-page-header">
+    <div class="aui-page-header-inner">
+        <h2>Jenkins Integration Administration</h2>
+    </div>
+</header>
+<nav id="main-nav" class="aui-navgroup aui-navgroup-horizontal">
+    <div class="aui-navgroup-inner">
+        <div class="aui-navgroup-primary">
+            <ul class="aui-nav">
+                <li id="general-nav-item" class="aui-nav-selected"><a href="#">General</a></li>
+                <li id="advanced-nav-item"><a href="#">Per Project</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="aui-page-panel">
+    <div class="aui-page-panel-inner">
+        <section class="aui-page-panel-content">
+            <div class="nav-content" id="content-1">
+                <form id="admin" class="aui">
+                    <div class="field-group">
+                        <label for="url">$i18n.getText("jenkins.admin.url.label")</label>
+                        <input type="text" id="url" name="url" class="text">
+                    </div>
+                    <div class="field-group">
+                        <input type="submit" value="$i18n.getText("jenkins.admin.save.label")" class="button">
+                    </div>
+                </form>
+            </div>
+            <div class="nav-content" id="content-2">
+                <div class="aui-message info">
+                    <span class="aui-icon aui-icon-info">Info</span>
+                    TDB
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
