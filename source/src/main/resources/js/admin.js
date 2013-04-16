@@ -43,4 +43,5 @@ AJS.toInit(function() {
             AJS.$("#" + contentId).show();
         }
     })
+    jQuery('#jenkins-integration-administration').parent().addClass('aui-nav-selected');
 });
