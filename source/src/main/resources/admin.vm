@@ -29,7 +29,7 @@
     <div class="aui-page-panel-inner">
         <section class="aui-page-panel-content">
             <div class="nav-content" id="content-1">
-                <form id="admin" class="aui">
+                <form id="admin" class="aui prevent-double-submit">
                     <div class="field-group">
                         <label for="url">$i18n.getText("jenkins.admin.url.label")</label>
                         <input type="text" id="url" name="url" class="text">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="field-group">
                         <input type="submit" value="$i18n.getText("jenkins.admin.save.label")" class="aui-button aui-button-primary" accesskey="s" />
-                        <a id="cancel" class="aui-button aui-button-link cancel" accesskey="c" href="./admin">Cancel</a>
+                        <a id="cancel" class="aui-button aui-button-link cancel" accesskey="c" href="./admin">$i18n.getText("jenkins.admin.cancel.label")</a>
                     </div>
                 </form>
             </div>
