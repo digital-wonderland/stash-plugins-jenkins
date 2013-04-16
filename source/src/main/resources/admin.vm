@@ -31,6 +31,10 @@
                     <div class="field-group">
                         <label for="url">$i18n.getText("jenkins.admin.url.label")</label>
                         <input type="text" id="url" name="url" class="text">
+                        <div class="description">
+                            The URL of your <a href="http://jenkins-ci.org">Jenkins</a> Instance. It can be overwritten
+                            on a per repository basis.
+                        </div>
                     </div>
                     <div class="field-group">
                         <input type="submit" value="$i18n.getText("jenkins.admin.save.label")" class="aui-button aui-button-primary" accesskey="s" />
