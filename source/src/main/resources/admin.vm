@@ -40,6 +40,7 @@
                     </div>
                     <div class="field-group">
                         <input type="submit" value="$i18n.getText("jenkins.admin.save.label")" class="aui-button aui-button-primary" accesskey="s" />
+                        <a id="cancel" class="aui-button aui-button-link cancel" accesskey="c" href="./admin">Cancel</a>
                     </div>
                 </form>
             </div>
