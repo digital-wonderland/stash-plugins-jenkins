@@ -33,7 +33,7 @@
                         <input type="text" id="url" name="url" class="text">
                     </div>
                     <div class="field-group">
-                        <input type="submit" value="$i18n.getText("jenkins.admin.save.label")" class="button">
+                        <input type="submit" value="$i18n.getText("jenkins.admin.save.label")" class="aui-button aui-button-primary" accesskey="s" />
                     </div>
                 </form>
             </div>
