@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Path("/")
 public class ConfigResource {
 
-    private final static String POSTFIX_URL = ".url";
+    final static String PLUGIN_KEY_URL = ConfigResource.class.getName() + ".url";
 
     private final UserManager userManager;
     private final PluginSettingsFactory pluginSettingsFactory;
@@ -50,7 +50,7 @@ public class ConfigResource {
             public Object doInTransaction() {
                 PluginSettings settings = pluginSettingsFactory.createGlobalSettings();
                 Config config = new Config();
-                config.setUrl((String) settings.get(Config.class.getName() + POSTFIX_URL));
+                config.setUrl((String) settings.get(PLUGIN_KEY_URL));
                 return config;
             }
         })).build();
@@ -67,7 +67,7 @@ public class ConfigResource {
         transactionTemplate.execute(new TransactionCallback() {
             public Object doInTransaction() {
                 PluginSettings pluginSettings = pluginSettingsFactory.createGlobalSettings();
-                pluginSettings.put(Config.class.getName() + POSTFIX_URL, config.getUrl());
+                pluginSettings.put(PLUGIN_KEY_URL, config.getUrl());
                 return null;
             }
         });
