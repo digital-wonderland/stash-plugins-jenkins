@@ -10,7 +10,7 @@
 <body>
 <header class="aui-page-header">
     <div class="aui-page-header-inner">
-        <h2>Jenkins Integration Administration</h2>
+        <h2>Jenkins Integration</h2>
     </div>
 </header>
 <nav id="main-nav" class="aui-navgroup aui-navgroup-horizontal">
