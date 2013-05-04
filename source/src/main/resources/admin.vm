@@ -15,6 +15,7 @@
         </div>
     </div>
 </header>
+<div id="aui-message-bar"></div>
 <nav id="main-nav" class="aui-navgroup aui-navgroup-horizontal">
     <div class="aui-navgroup-inner">
         <div class="aui-navgroup-primary">

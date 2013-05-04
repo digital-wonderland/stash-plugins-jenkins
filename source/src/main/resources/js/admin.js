@@ -17,7 +17,19 @@ AJS.toInit(function() {
             type: "PUT",
             contentType: "application/json",
             data: '{ "url": "' + AJS.$("#url").attr("value") + '" }',
-            processData: false
+            processData: false,
+            success: function() {
+                AJS.messages.success({
+                    title: "Success",
+                    body: "Configuration saved."
+                });
+            },
+            error: function() {
+                AJS.messages.error({
+                    title: "Error",
+                    body: "Unable to save configuration."
+                });
+            }
         });
     }
 
