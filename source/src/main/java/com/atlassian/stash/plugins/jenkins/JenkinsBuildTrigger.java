@@ -12,13 +12,19 @@ import com.atlassian.stash.setting.RepositorySettingsValidator;
 import com.atlassian.stash.setting.Settings;
 import com.atlassian.stash.setting.SettingsValidationErrors;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Collection;
 
 public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
 {
+    private static final Logger LOG = LoggerFactory.getLogger(JenkinsBuildTrigger.class);
+
     private static final String PROPERTY_URL = "url";
 
     private final ApplicationPropertiesService applicationProperties;
@@ -49,8 +55,15 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
             });
         }
 
-        url = url + "/git/notifyCommit?url=http://" +
-                applicationProperties.getBaseUrl().getHost() + "/" + projectKey + "/" + repositoryName + ".git";
+        String stashUrl = "http://" + applicationProperties.getBaseUrl().getHost() + "/" + projectKey.toLowerCase() + "/" + repositoryName + ".git";
+
+        try {
+            url = url + "/git/notifyCommit?url=" + URLEncoder.encode(stashUrl, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOG.error(e.getMessage(), e);
+        }
+
+        LOG.debug("Notifying Jenkins via URL: [{}]", url);
 
         if (url != null) {
             try {

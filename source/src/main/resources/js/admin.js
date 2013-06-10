@@ -21,6 +21,10 @@ AJS.toInit(function() {
             success: function() {
                 AJS.messages.success({
                     title: "Success",
+                    //FIXME fadeout doesn't work
+                    fadeout: true,
+                    delay: 2000,
+                    duration: 10000,
                     body: "Configuration saved."
                 });
             },
