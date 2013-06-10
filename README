@@ -1,4 +1,4 @@
-TODO - use travis-ci.org to do CI: http://about.travis-ci.org/docs/user/getting-started/
+[![Build Status](https://api.travis-ci.org/digital-wonderland/stash-plugins-jenkins.png)](https://travis-ci.org/digital-wonderland/stash-plugins-jenkins)
 
 
 You have successfully created an Atlassian Plugin!
