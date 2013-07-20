@@ -54,6 +54,8 @@
         </condition>
     </web-item>
 
+    <component-import key="sshCloneUrlResolver" interface="com.atlassian.stash.ssh.api.SshCloneUrlResolver"/>
+
     <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
         <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
         <icon>images/jenkinsLogo.png</icon>

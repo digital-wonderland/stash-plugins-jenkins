@@ -84,6 +84,11 @@
         </dependency>
         <dependency>
             <groupId>com.atlassian.stash</groupId>
+            <artifactId>stash-ssh</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.stash</groupId>
             <artifactId>stash-page-objects</artifactId>
             <scope>provided</scope>
         </dependency>

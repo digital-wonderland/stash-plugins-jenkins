@@ -7,10 +7,10 @@ import com.atlassian.stash.hook.repository.AsyncPostReceiveRepositoryHook;
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
 import com.atlassian.stash.repository.RefChange;
 import com.atlassian.stash.repository.Repository;
-import com.atlassian.stash.server.ApplicationPropertiesService;
 import com.atlassian.stash.setting.RepositorySettingsValidator;
 import com.atlassian.stash.setting.Settings;
 import com.atlassian.stash.setting.SettingsValidationErrors;
+import com.atlassian.stash.ssh.api.SshCloneUrlResolver;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,25 +27,24 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
 
     private static final String PROPERTY_URL = "url";
 
-    private final ApplicationPropertiesService applicationProperties;
     private final PluginSettingsFactory pluginSettingsFactory;
     private final TransactionTemplate transactionTemplate;
+    private final SshCloneUrlResolver sshCloneUrlResolver;
 
-    public JenkinsBuildTrigger(final ApplicationPropertiesService applicationProperties, final PluginSettingsFactory pluginSettingsFactory, final TransactionTemplate transactionTemplate) {
-        this.applicationProperties = applicationProperties;
+    public JenkinsBuildTrigger(final PluginSettingsFactory pluginSettingsFactory,
+                               final TransactionTemplate transactionTemplate,
+                               final SshCloneUrlResolver sshCloneUrlResolver) {
         this.pluginSettingsFactory = pluginSettingsFactory;
         this.transactionTemplate = transactionTemplate;
+        this.sshCloneUrlResolver = sshCloneUrlResolver;
     }
 
     /**
-     * Connects to a configured URL to notify of all changes.
+     * Notifies Jenkins of a new commit assuming Jenkins is configured to connect to Stash via SSH.
      */
     @Override
     public void postReceive(final RepositoryHookContext context, final Collection<RefChange> refChanges)
     {
-        final String projectKey = context.getRepository().getProject().getKey();
-        final String repositoryName = context.getRepository().getName();
-
         String url = context.getSettings().getString(PROPERTY_URL);
         if(StringUtils.isBlank(url)) {
             url = (String) transactionTemplate.execute(new TransactionCallback() {
@@ -55,10 +54,8 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
             });
         }
 
-        String stashUrl = "http://" + applicationProperties.getBaseUrl().getHost() + "/" + projectKey.toLowerCase() + "/" + repositoryName + ".git";
-
         try {
-            url = url + "/git/notifyCommit?url=" + URLEncoder.encode(stashUrl, "UTF-8");
+            url = String.format("%s/git/notifyCommit?url=%s", url, URLEncoder.encode(sshCloneUrlResolver.getCloneUrl(context.getRepository()), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             LOG.error(e.getMessage(), e);
         }
@@ -70,7 +67,7 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
                 new URL(url).openConnection().getInputStream().close();
             }
             catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("Unable to connect to Jenkins at [" + url + "]", e);
             }
         }
     }
