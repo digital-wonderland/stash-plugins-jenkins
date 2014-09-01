@@ -7,10 +7,12 @@ import com.atlassian.stash.hook.repository.AsyncPostReceiveRepositoryHook;
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
 import com.atlassian.stash.repository.RefChange;
 import com.atlassian.stash.repository.Repository;
+import com.atlassian.stash.repository.RepositoryCloneLinksRequest;
+import com.atlassian.stash.repository.RepositoryService;
 import com.atlassian.stash.setting.RepositorySettingsValidator;
 import com.atlassian.stash.setting.Settings;
 import com.atlassian.stash.setting.SettingsValidationErrors;
-import com.atlassian.stash.ssh.api.SshCloneUrlResolver;
+import com.atlassian.stash.util.NamedLink;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collection;
+import java.util.Set;
 
 public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
 {
@@ -29,14 +32,14 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
 
     private final PluginSettingsFactory pluginSettingsFactory;
     private final TransactionTemplate transactionTemplate;
-    private final SshCloneUrlResolver sshCloneUrlResolver;
+    private final RepositoryService repositoryService;
 
     public JenkinsBuildTrigger(final PluginSettingsFactory pluginSettingsFactory,
                                final TransactionTemplate transactionTemplate,
-                               final SshCloneUrlResolver sshCloneUrlResolver) {
+                               final RepositoryService repositoryService) {
         this.pluginSettingsFactory = pluginSettingsFactory;
         this.transactionTemplate = transactionTemplate;
-        this.sshCloneUrlResolver = sshCloneUrlResolver;
+        this.repositoryService = repositoryService;
     }
 
     /**
@@ -55,7 +58,16 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
         }
 
         try {
-            url = String.format("%s/git/notifyCommit?url=%s", url, URLEncoder.encode(sshCloneUrlResolver.getCloneUrl(context.getRepository()), "UTF-8"));
+            final RepositoryCloneLinksRequest linksRequest = new RepositoryCloneLinksRequest.Builder()
+                    .protocol("ssh")
+                    .repository(context.getRepository())
+                    .build();
+            final Set<NamedLink> links = repositoryService.getCloneLinks(linksRequest);
+            if(links.isEmpty()) {
+                LOG.error("Unable to calculate clone link for repository [{}]", context.getRepository());
+            } else {
+                url = String.format("%s/git/notifyCommit?url=%s", url, URLEncoder.encode(links.iterator().next().getHref(), "UTF-8"));
+            }
         } catch (UnsupportedEncodingException e) {
             LOG.error(e.getMessage(), e);
         }

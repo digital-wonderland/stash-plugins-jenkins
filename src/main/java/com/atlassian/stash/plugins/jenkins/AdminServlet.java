@@ -1,6 +1,7 @@
 package com.atlassian.stash.plugins.jenkins;
 
 import com.atlassian.sal.api.auth.LoginUriProvider;
+import com.atlassian.sal.api.user.UserKey;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.templaterenderer.TemplateRenderer;
 
@@ -32,8 +33,8 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
-        String username = userManager.getRemoteUsername(request);
-        if (username == null || !userManager.isSystemAdmin(username)) {
+        final UserKey key = userManager.getRemoteUserKey();
+        if (key == null || !userManager.isSystemAdmin(key)) {
             redirectToLogin(request, response);
             return;
         }

@@ -4,6 +4,7 @@ import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.atlassian.sal.api.transaction.TransactionTemplate;
+import com.atlassian.sal.api.user.UserKey;
 import com.atlassian.sal.api.user.UserManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +42,8 @@ public class ConfigResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@Context final HttpServletRequest request) {
-        final String username = userManager.getRemoteUsername(request);
-        if (username == null || !userManager.isSystemAdmin(username)) {
+        final UserKey key = userManager.getRemoteUserKey();
+        if (key == null || !userManager.isSystemAdmin(key)) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
@@ -59,8 +60,8 @@ public class ConfigResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response put(final Config config, @Context final HttpServletRequest request) {
-        String username = userManager.getRemoteUsername(request);
-        if (username == null || !userManager.isSystemAdmin(username)) {
+        final UserKey key = userManager.getRemoteUserKey();
+        if (key == null || !userManager.isSystemAdmin(key)) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
