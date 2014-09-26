@@ -108,13 +108,6 @@
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
-        <!-- WIRED TEST RUNNER DEPENDENCIES -->
-        <dependency>
-            <groupId>com.atlassian.plugins</groupId>
-            <artifactId>atlassian-plugins-osgi-testrunner</artifactId>
-            <version>${plugin.testrunner.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
@@ -162,9 +155,8 @@
         </plugins>
     </build>
     <properties>
-        <stash.version>3.2.4</stash.version>
-        <stash.data.version>3.2.4</stash.data.version>
+        <stash.version>3.3.1</stash.version>
+        <stash.data.version>3.3.1</stash.data.version>
         <amps.version>5.0.4</amps.version>
-        <plugin.testrunner.version>1.1.4</plugin.testrunner.version>
     </properties>
 </project>
