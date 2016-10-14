@@ -1,16 +1,20 @@
 package com.atlassian.stash.plugins.jenkins;
 
-import com.atlassian.sal.api.auth.LoginUriProvider;
-import com.atlassian.sal.api.user.UserKey;
-import com.atlassian.sal.api.user.UserManager;
-import com.atlassian.templaterenderer.TemplateRenderer;
+import java.io.IOException;
+import java.net.URI;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URI;
+
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import com.atlassian.sal.api.auth.LoginUriProvider;
+import com.atlassian.sal.api.user.UserKey;
+import com.atlassian.sal.api.user.UserManager;
+import com.atlassian.templaterenderer.TemplateRenderer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,13 +23,15 @@ import java.net.URI;
  * Time: 18:40
  * To change this template use File | Settings | File Templates.
  */
+@Component
 public class AdminServlet extends HttpServlet {
 
     private final UserManager userManager;
     private final LoginUriProvider loginUriProvider;
     private final TemplateRenderer renderer;
 
-    public AdminServlet(final UserManager userManager, final LoginUriProvider loginUriProvider, final TemplateRenderer renderer) {
+    @Autowired
+    public AdminServlet(@ComponentImport final UserManager userManager, @ComponentImport final LoginUriProvider loginUriProvider, @ComponentImport final TemplateRenderer renderer) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.renderer = renderer;

@@ -1,5 +1,6 @@
 package com.atlassian.stash.plugins.jenkins;
 
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.atlassian.sal.api.transaction.TransactionTemplate;
@@ -16,6 +17,8 @@ import com.atlassian.stash.util.NamedLink;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -24,8 +27,8 @@ import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Set;
 
-public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
-{
+@Component
+public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator {
     private static final Logger LOG = LoggerFactory.getLogger(JenkinsBuildTrigger.class);
 
     private static final String PROPERTY_URL = "url";
@@ -34,9 +37,10 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
     private final TransactionTemplate transactionTemplate;
     private final RepositoryService repositoryService;
 
-    public JenkinsBuildTrigger(final PluginSettingsFactory pluginSettingsFactory,
-                               final TransactionTemplate transactionTemplate,
-                               final RepositoryService repositoryService) {
+    @Autowired
+    public JenkinsBuildTrigger(@ComponentImport final PluginSettingsFactory pluginSettingsFactory,
+            @ComponentImport final TransactionTemplate transactionTemplate,
+            @ComponentImport final RepositoryService repositoryService) {
         this.pluginSettingsFactory = pluginSettingsFactory;
         this.transactionTemplate = transactionTemplate;
         this.repositoryService = repositoryService;
@@ -46,10 +50,9 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
      * Notifies Jenkins of a new commit assuming Jenkins is configured to connect to Stash via SSH.
      */
     @Override
-    public void postReceive(final RepositoryHookContext context, final Collection<RefChange> refChanges)
-    {
+    public void postReceive(final RepositoryHookContext context, final Collection<RefChange> refChanges) {
         String url = context.getSettings().getString(PROPERTY_URL);
-        if(StringUtils.isBlank(url)) {
+        if (StringUtils.isBlank(url)) {
             url = (String) transactionTemplate.execute(new TransactionCallback() {
                 public Object doInTransaction() {
                     return pluginSettingsFactory.createGlobalSettings().get(ConfigResource.PLUGIN_KEY_URL);
@@ -63,7 +66,7 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
                     .repository(context.getRepository())
                     .build();
             final Set<NamedLink> links = repositoryService.getCloneLinks(linksRequest);
-            if(links.isEmpty()) {
+            if (links.isEmpty()) {
                 LOG.error("Unable to calculate clone link for repository [{}]", context.getRepository());
             } else {
                 url = String.format("%s/git/notifyCommit?url=%s", url, URLEncoder.encode(links.iterator().next().getHref(), "UTF-8"));
@@ -77,16 +80,14 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
         if (url != null) {
             try {
                 new URL(url).openConnection().getInputStream().close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LOG.error("Unable to connect to Jenkins at [" + url + "]", e);
             }
         }
     }
 
     @Override
-    public void validate(Settings settings, SettingsValidationErrors errors, Repository repository)
-    {
+    public void validate(Settings settings, SettingsValidationErrors errors, Repository repository) {
         String url = settings.getString(PROPERTY_URL, "");
         if (StringUtils.isNotEmpty(url)) {
             try {

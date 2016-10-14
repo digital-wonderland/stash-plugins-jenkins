@@ -1,11 +1,14 @@
 package com.atlassian.stash.plugins.jenkins;
 
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.atlassian.sal.api.transaction.TransactionTemplate;
 import com.atlassian.sal.api.user.UserKey;
 import com.atlassian.sal.api.user.UserManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -24,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Time: 19:13
  * To change this template use File | Settings | File Templates.
  */
+@Component
 @Path("/")
 public class ConfigResource {
 
@@ -33,7 +37,8 @@ public class ConfigResource {
     private final PluginSettingsFactory pluginSettingsFactory;
     private final TransactionTemplate transactionTemplate;
 
-    public ConfigResource(final UserManager userManager, final PluginSettingsFactory pluginSettingsFactory, final TransactionTemplate transactionTemplate) {
+    @Autowired
+    public ConfigResource(@ComponentImport final UserManager userManager, @ComponentImport final PluginSettingsFactory pluginSettingsFactory, @ComponentImport final TransactionTemplate transactionTemplate) {
         this.userManager = userManager;
         this.pluginSettingsFactory = pluginSettingsFactory;
         this.transactionTemplate = transactionTemplate;

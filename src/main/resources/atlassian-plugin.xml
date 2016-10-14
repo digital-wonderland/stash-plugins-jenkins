@@ -26,21 +26,24 @@
     </web-resource>
 
     <!-- import from the product container -->
-    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+    <!--<component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>-->
 
     <template-context-item key="applicationPropertiesContextItem" component-ref="applicationProperties"
                            context-key="applicationProperties" name="Application Properties Context Item"/>
 
-    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" />
-    <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" />
-    <component-import key="renderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer" />
+
 
     <servlet key="admin-servlet" class="com.atlassian.stash.plugins.jenkins.AdminServlet">
         <url-pattern>/jenkins/admin</url-pattern>
     </servlet>
 
+    <!--
+    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" />
+    <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" />
+    <component-import key="renderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer" />
     <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
     <component-import key="transactionTemplate" interface="com.atlassian.sal.api.transaction.TransactionTemplate" />
+    <component-import key="sshCloneUrlResolver" interface="com.atlassian.stash.ssh.api.SshCloneUrlResolver"/>-->
 
     <rest key="rest" path="/jenkins" version="1.0">
         <description>Provides REST resources for the admin UI.</description>
@@ -55,7 +58,6 @@
         </condition>
     </web-item>
 
-    <component-import key="sshCloneUrlResolver" interface="com.atlassian.stash.ssh.api.SshCloneUrlResolver"/>
 
     <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
         <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
