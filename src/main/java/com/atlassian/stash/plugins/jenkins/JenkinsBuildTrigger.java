@@ -1,31 +1,32 @@
 package com.atlassian.stash.plugins.jenkins;
 
-import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
-import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
-import com.atlassian.sal.api.transaction.TransactionCallback;
-import com.atlassian.sal.api.transaction.TransactionTemplate;
-import com.atlassian.stash.hook.repository.AsyncPostReceiveRepositoryHook;
-import com.atlassian.stash.hook.repository.RepositoryHookContext;
-import com.atlassian.stash.repository.RefChange;
-import com.atlassian.stash.repository.Repository;
-import com.atlassian.stash.repository.RepositoryCloneLinksRequest;
-import com.atlassian.stash.repository.RepositoryService;
-import com.atlassian.stash.setting.RepositorySettingsValidator;
-import com.atlassian.stash.setting.Settings;
-import com.atlassian.stash.setting.SettingsValidationErrors;
-import com.atlassian.stash.util.NamedLink;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.atlassian.bitbucket.hook.repository.AsyncPostReceiveRepositoryHook;
+import com.atlassian.bitbucket.hook.repository.RepositoryHookContext;
+import com.atlassian.bitbucket.repository.RefChange;
+import com.atlassian.bitbucket.repository.Repository;
+import com.atlassian.bitbucket.repository.RepositoryCloneLinksRequest;
+import com.atlassian.bitbucket.repository.RepositoryService;
+import com.atlassian.bitbucket.setting.RepositorySettingsValidator;
+import com.atlassian.bitbucket.setting.Settings;
+import com.atlassian.bitbucket.setting.SettingsValidationErrors;
+import com.atlassian.bitbucket.util.NamedLink;
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
+import com.atlassian.sal.api.transaction.TransactionCallback;
+import com.atlassian.sal.api.transaction.TransactionTemplate;
 
 @Component
 public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator {
@@ -49,7 +50,6 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
     /**
      * Notifies Jenkins of a new commit assuming Jenkins is configured to connect to Stash via SSH.
      */
-    @Override
     public void postReceive(final RepositoryHookContext context, final Collection<RefChange> refChanges) {
         String url = context.getSettings().getString(PROPERTY_URL);
         if (StringUtils.isBlank(url)) {
@@ -86,7 +86,6 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
         }
     }
 
-    @Override
     public void validate(Settings settings, SettingsValidationErrors errors, Repository repository) {
         String url = settings.getString(PROPERTY_URL, "");
         if (StringUtils.isNotEmpty(url)) {

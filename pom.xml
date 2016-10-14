@@ -1,60 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <modelVersion>4.0.0</modelVersion>
     <groupId>biz.netcentric.atlas</groupId>
     <artifactId>bitbucket-jenkins-plugin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <organization>
-        <name>Netcentric</name>
-        <url>http://www.netcentric.biz/</url>
+        <name>Example Company</name>
+        <url>http://www.example.com/</url>
     </organization>
 
-    <name>Jenkins Integration</name>
-    <description>This plugin notifies Jenkins about changes.</description>
+    <name>bitbucket-jenkins-plugin</name>
+    <description>This is the biz.netcentric.atlas:bitbucket-jenkins-plugin plugin for Atlassian Bitbucket Server.</description>
     <packaging>atlassian-plugin</packaging>
-
-    <repositories>
-        <repository>
-            <id>atlassian-m2-repository</id>
-            <name>Atlassian Maven 2 Repository</name>
-            <url>https://maven.atlassian.com/content/groups/public/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>atlassian-m2-plugin-repository</id>
-            <name>Atlassian Maven 2 Repository</name>
-            <url>https://maven.atlassian.com/content/groups/public/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <properties>
-
-        <stash.version>3.11.6</stash.version>
-        <stash.data.version>3.11.6</stash.data.version>
-        <amps.version>6.2.4</amps.version>
-        <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
-        <atlassian.spring.scanner.version>1.2.6</atlassian.spring.scanner.version>
-        <!-- This key is used to keep the consistency between the key in atlassian-plugin.xml and the key to generate bundle. -->
-        <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
-
-    </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.atlassian.stash</groupId>
-                <artifactId>stash-parent</artifactId>
-                <version>${stash.version}</version>
+                <groupId>com.atlassian.bitbucket.server</groupId>
+                <artifactId>bitbucket-parent</artifactId>
+                <version>${bitbucket.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -68,18 +36,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.atlassian.stash</groupId>
-            <artifactId>stash-api</artifactId>
+            <groupId>com.atlassian.bitbucket.server</groupId>
+            <artifactId>bitbucket-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.atlassian.stash</groupId>
-            <artifactId>stash-spi</artifactId>
+            <groupId>com.atlassian.bitbucket.server</groupId>
+            <artifactId>bitbucket-spi</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.atlassian.stash</groupId>
-            <artifactId>stash-page-objects</artifactId>
+            <groupId>com.atlassian.bitbucket.server</groupId>
+            <artifactId>bitbucket-page-objects</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -151,7 +119,7 @@
         <plugins>
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-stash-plugin</artifactId>
+                <artifactId>bitbucket-maven-plugin</artifactId>
                 <version>${amps.version}</version>
                 <extensions>true</extensions>
                 <configuration>
@@ -159,10 +127,10 @@
                     <enableQuickReload>true</enableQuickReload>
                     <products>
                         <product>
-                            <id>stash</id>
-                            <instanceId>stash</instanceId>
-                            <version>${stash.version}</version>
-                            <dataVersion>${stash.data.version}</dataVersion>
+                            <id>bitbucket</id>
+                            <instanceId>bitbucket</instanceId>
+                            <version>${bitbucket.version}</version>
+                            <dataVersion>${bitbucket.data.version}</dataVersion>
                         </product>
                     </products>
                     <instructions>
@@ -170,7 +138,7 @@
 
                         <!-- Add package to export here -->
                         <Export-Package>
-                            biz.netcentric.atlas.bitbucket.api,
+                            biz.netcentric.atlas.jenkins.api,
                         </Export-Package>
 
                         <!-- Add package import here -->
@@ -180,7 +148,7 @@
                             *
                         </Import-Package>
 
-                        <!-- Ensure plugin is spring powered -->
+                        <!-- Ensure plugin is Spring powered -->
                         <Spring-Context>*</Spring-Context>
                     </instructions>
                 </configuration>
@@ -208,17 +176,17 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <compilerArgument>-Xlint:deprecation</compilerArgument>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <bitbucket.version>4.10.1</bitbucket.version>
+        <bitbucket.data.version>4.10.1</bitbucket.data.version>
+        <amps.version>6.2.4</amps.version>
+        <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
+        <atlassian.spring.scanner.version>1.2.6</atlassian.spring.scanner.version>
+        <!-- This key is used to keep the consistency between the key in atlassian-plugin.xml and the key to generate bundle. -->
+        <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
+    </properties>
 
 </project>
