@@ -138,7 +138,6 @@
 
                         <!-- Add package to export here -->
                         <Export-Package>
-                            biz.netcentric.atlas.jenkins.api,
                         </Export-Package>
 
                         <!-- Add package import here -->
@@ -173,7 +172,7 @@
                             <artifactId>atlassian-spring-scanner-external-jar</artifactId>
                         </dependency>
                     </scannedDependencies>
-                    <verbose>false</verbose>
+                    <verbose>true</verbose>
                 </configuration>
             </plugin>
         </plugins>

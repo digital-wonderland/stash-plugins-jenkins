@@ -31,6 +31,7 @@ import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.atlassian.bitbucket.permission.PermissionService;
 
 /**
  * Renders the admin ui widget if the current user is permitted to configure the plugin.
@@ -51,9 +52,13 @@ public class AdminServlet extends HttpServlet {
 
     private final TemplateRenderer renderer;
 
+    /* Added PermissionService dependency as com.atlassian.bitbucket.web.conditions.HasGlobalPermissionCondition requires it and we can not
+     * manually add an import as we are using the AtlassianSpringScanner */
+    private PermissionService permissionService;
+
     @Autowired
     public AdminServlet(@ComponentImport final UserManager userManager, @ComponentImport final LoginUriProvider loginUriProvider,
-            @ComponentImport final TemplateRenderer renderer) {
+            @ComponentImport final TemplateRenderer renderer, @ComponentImport final PermissionService permissionService) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.renderer = renderer;
