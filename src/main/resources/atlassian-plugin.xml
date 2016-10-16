@@ -23,7 +23,7 @@
         <resource type="download" name="admin.js" location="/js/admin.js"/>
     </web-resource>
 
-    <servlet key="admin-servlet" class="com.atlassian.stash.plugins.jenkins.AdminServlet">
+    <servlet key="admin-servlet" class="biz.netcentric.bitbucket.plugins.jenkins.AdminServlet">
         <url-pattern>/jenkins/admin</url-pattern>
     </servlet>
 
@@ -35,13 +35,13 @@
         <description>Link to Jenkins integration administration page.</description>
         <label key="jenkins.admin.label" />
         <link linkId="jenkins-integration-administration">/plugins/servlet/jenkins/admin</link>
-        <condition class="com.atlassian.stash.web.conditions.HasGlobalPermissionCondition">
+        <condition class="com.atlassian.bitbucket.web.conditions.HasGlobalPermissionCondition">
             <param name="permission">SYS_ADMIN</param>
         </condition>
     </web-item>
 
 
-    <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
+    <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="biz.netcentric.bitbucket.plugins.jenkins.JenkinsBuildTrigger">
         <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
         <icon>images/jenkinsLogo.png</icon>
         <config-form name="Jenkins Build Trigger Config" key="jenkins-build-trigger-config">
