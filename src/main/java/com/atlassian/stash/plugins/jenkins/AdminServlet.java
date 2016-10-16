@@ -17,21 +17,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Created with IntelliJ IDEA.
- * User: stephan
- * Date: 16.4.2013
- * Time: 18:40
- * To change this template use File | Settings | File Templates.
+ * Renders the admin ui widget if the current user is permitted to configure the plugin.
+ *
+ * @author Stephan.Kleine
+ * @since 04/2013
  */
 @Component
 public class AdminServlet extends HttpServlet {
 
+    private static final String CONTENT_TYPE = "text/html;charset=utf-8";
+
+    private static final String ADMIN_VM_TEMPLATE = "admin.vm";
+
     private final UserManager userManager;
+
     private final LoginUriProvider loginUriProvider;
+
     private final TemplateRenderer renderer;
 
     @Autowired
-    public AdminServlet(@ComponentImport final UserManager userManager, @ComponentImport final LoginUriProvider loginUriProvider, @ComponentImport final TemplateRenderer renderer) {
+    public AdminServlet(@ComponentImport final UserManager userManager, @ComponentImport final LoginUriProvider loginUriProvider,
+            @ComponentImport final TemplateRenderer renderer) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.renderer = renderer;
@@ -45,17 +51,16 @@ public class AdminServlet extends HttpServlet {
             return;
         }
 
-        response.setContentType("text/html;charset=utf-8");
-        renderer.render("admin.vm", response.getWriter());
+        response.setContentType(CONTENT_TYPE);
+        renderer.render(ADMIN_VM_TEMPLATE, response.getWriter());
     }
-
 
     private void redirectToLogin(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         response.sendRedirect(loginUriProvider.getLoginUri(getUri(request)).toASCIIString());
     }
 
     private URI getUri(final HttpServletRequest request) {
-        StringBuffer builder = request.getRequestURL();
+        final StringBuffer builder = request.getRequestURL();
         if (request.getQueryString() != null) {
             builder.append("?");
             builder.append(request.getQueryString());

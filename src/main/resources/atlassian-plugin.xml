@@ -35,9 +35,9 @@
         <description>Link to Jenkins integration administration page.</description>
         <label key="jenkins.admin.label" />
         <link linkId="jenkins-integration-administration">/plugins/servlet/jenkins/admin</link>
-        <!--<condition class="com.atlassian.stash.web.conditions.HasGlobalPermissionCondition">
+        <condition class="com.atlassian.stash.web.conditions.HasGlobalPermissionCondition">
             <param name="permission">SYS_ADMIN</param>
-        </condition>-->
+        </condition>
     </web-item>
 
 

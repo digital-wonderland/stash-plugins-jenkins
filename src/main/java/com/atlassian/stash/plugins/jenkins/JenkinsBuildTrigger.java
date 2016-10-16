@@ -28,6 +28,14 @@ import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.atlassian.sal.api.transaction.TransactionTemplate;
 
+/**
+ * Asynchronous post receive hook that react's whenever a persistant operation has been applied to the repository. It uses the configurd
+ * jenkins URL, created a notification URL fpor this repo and calls the URL. This triggers the jenkins build for the repository the jenkins
+ * build trigger is configured.
+ * 
+ * @author Stephan.Kleine
+ * @since 04/2013
+ */
 @Component
 public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator {
     private static final Logger LOG = LoggerFactory.getLogger(JenkinsBuildTrigger.class);

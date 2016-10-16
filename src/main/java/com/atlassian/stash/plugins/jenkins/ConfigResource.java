@@ -21,11 +21,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created with IntelliJ IDEA.
- * User: stephan
- * Date: 16.4.2013
- * Time: 19:13
- * To change this template use File | Settings | File Templates.
+ * The plugin's configuration resource servlet. Get's and persists the plugin configuration.
+ * 
+ * @author Stephan.Kleine
+ * @since 04/2013
  */
 @Component
 @Path("/")
@@ -38,7 +37,9 @@ public class ConfigResource {
     private final TransactionTemplate transactionTemplate;
 
     @Autowired
-    public ConfigResource(@ComponentImport final UserManager userManager, @ComponentImport final PluginSettingsFactory pluginSettingsFactory, @ComponentImport final TransactionTemplate transactionTemplate) {
+    public ConfigResource(@ComponentImport final UserManager userManager,
+            @ComponentImport final PluginSettingsFactory pluginSettingsFactory,
+            @ComponentImport final TransactionTemplate transactionTemplate) {
         this.userManager = userManager;
         this.pluginSettingsFactory = pluginSettingsFactory;
         this.transactionTemplate = transactionTemplate;
@@ -82,9 +83,9 @@ public class ConfigResource {
 
     @XmlRootElement
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static final class Config
-    {
-        @XmlElement private String url;
+    public static final class Config {
+        @XmlElement
+        private String url;
 
         public String getUrl() {
             return url;
