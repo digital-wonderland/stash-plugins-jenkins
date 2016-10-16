@@ -94,8 +94,8 @@ public class JenkinsBuildTrigger implements AsyncPostReceiveRepositoryHook, Repo
         }
     }
 
-    public void validate(Settings settings, SettingsValidationErrors errors, Repository repository) {
-        String url = settings.getString(PROPERTY_URL, "");
+    public void validate(final Settings settings, final SettingsValidationErrors errors, final Repository repository) {
+        final String url = settings.getString(PROPERTY_URL, "");
         if (StringUtils.isNotEmpty(url)) {
             try {
                 new URL(url);
