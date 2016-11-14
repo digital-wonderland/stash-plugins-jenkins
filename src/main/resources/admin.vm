@@ -3,7 +3,7 @@
     <title>$i18n.getText("jenkins.admin.label")</title>
     <meta name="decorator" content="atl.admin">
     $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
-    $webResourceManager.requireResource("com.atlassian.stash.plugins.jenkins:resources")
+    $webResourceManager.requireResource("biz.netcentric.atlas.bitbucket-jenkins-plugin:resources")
 
     <meta name="application-base-url" content="$applicationProperties.getBaseUrl()">
 </head>
