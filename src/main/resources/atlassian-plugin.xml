@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
     <plugin-info>
         <description>${project.description}</description>
         <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-        <param name="plugin-icon">images/jenkinsIcon.png</param>
-        <param name="plugin-logo">images/jenkinsLogo.png</param>
-        <param name="configure.url">/plugins/servlet/jenkins/admin</param>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
     </plugin-info>
 
     <!-- add our i18n resource -->
@@ -25,22 +23,9 @@
         <resource type="download" name="admin.js" location="/js/admin.js"/>
     </web-resource>
 
-    <!-- import from the product container -->
-    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
-
-    <template-context-item key="applicationPropertiesContextItem" component-ref="applicationProperties"
-                           context-key="applicationProperties" name="Application Properties Context Item"/>
-
-    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" />
-    <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" />
-    <component-import key="renderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer" />
-
-    <servlet key="admin-servlet" class="com.atlassian.stash.plugins.jenkins.AdminServlet">
+    <servlet key="admin-servlet" class="biz.netcentric.bitbucket.plugins.jenkins.AdminServlet">
         <url-pattern>/jenkins/admin</url-pattern>
     </servlet>
-
-    <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
-    <component-import key="transactionTemplate" interface="com.atlassian.sal.api.transaction.TransactionTemplate" />
 
     <rest key="rest" path="/jenkins" version="1.0">
         <description>Provides REST resources for the admin UI.</description>
@@ -50,14 +35,13 @@
         <description>Link to Jenkins integration administration page.</description>
         <label key="jenkins.admin.label" />
         <link linkId="jenkins-integration-administration">/plugins/servlet/jenkins/admin</link>
-        <condition class="com.atlassian.stash.web.conditions.HasGlobalPermissionCondition">
+        <condition class="com.atlassian.bitbucket.web.conditions.HasGlobalPermissionCondition">
             <param name="permission">SYS_ADMIN</param>
         </condition>
     </web-item>
 
-    <component-import key="sshCloneUrlResolver" interface="com.atlassian.stash.ssh.api.SshCloneUrlResolver"/>
 
-    <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="com.atlassian.stash.plugins.jenkins.JenkinsBuildTrigger">
+    <repository-hook name="Jenkins Build Trigger" i18n-name-key="jenkins-build-trigger.name" key="jenkins-build-trigger" class="biz.netcentric.bitbucket.plugins.jenkins.JenkinsBuildTrigger">
         <description key="jenkins-build-trigger.description">Triggers a new build in Jenkins</description>
         <icon>images/jenkinsLogo.png</icon>
         <config-form name="Jenkins Build Trigger Config" key="jenkins-build-trigger-config">
@@ -65,4 +49,5 @@
             <directory location="/static/"/>
         </config-form>
     </repository-hook>
+
 </atlassian-plugin>

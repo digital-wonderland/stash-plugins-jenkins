@@ -1,6 +1,5 @@
 AJS.toInit(function() {
-    var baseUrl = AJS.$("meta[name='application-base-url']").attr("content");
-
+    var baseUrl = AJS.contextPath();
     function populateForm() {
         AJS.$.ajax({
             url: baseUrl + "/rest/jenkins/1.0/",
